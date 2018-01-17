@@ -1,7 +1,7 @@
 from random import shuffle
 import matplotlib.pyplot as plt
 
-DIMENSION = 10
+DIMENSION = 20
 UP = (0, 1)
 RIGHT = (1, 0)
 DOWN = (0, -1)
@@ -25,11 +25,11 @@ class Maze:
         self.board[0][0].is_active = True
 
 
-def move_forward(maze, steps_count):
+def move_forward(maze):
     new_maze = maze
     directions = [UP, RIGHT, DOWN, LEFT]
-
-    for step in range(steps_count):
+    creation_ended = False
+    while not creation_ended:
         shuffle(directions)
 
         is_able_to_move_forward = False
@@ -40,15 +40,6 @@ def move_forward(maze, steps_count):
             new_x = new_x + direction[0]
             new_y = new_y + direction[1]
 
-            # if direction == UP:
-            #     new_y = new_y + 1
-            # elif direction == RIGHT:
-            #     new_x = new_x + 1
-            # elif direction == DOWN:
-            #     new_y = new_y - 1
-            # elif direction == LEFT:
-            #     new_x = new_x - 1
-
             if is_inside_board(new_maze, new_x, new_y):
                 if is_not_active(new_maze, new_x, new_y):
                     new_maze.stack.append((new_x, new_y))
@@ -56,15 +47,15 @@ def move_forward(maze, steps_count):
                     is_able_to_move_forward = True
                     break
         if not is_able_to_move_forward:
-            new_maze = move_backward(new_maze)
-        print step
+            if all_board_cells_active(new_maze):
+                creation_ended = True
+            else:
+                new_maze = move_backward(new_maze)
     print new_maze.stack
     return new_maze
 
 
 def move_backward(maze):
-    if all_board_cells_active(maze): return None #!
-
     new_maze = maze
     is_able_to_move_forward = False
     stack_index = -2
@@ -80,8 +71,8 @@ def move_backward(maze):
 
 
 def all_board_cells_active(maze):
-    for x in range(DIMENSION):
-        for y in range(DIMENSION):
+    for x in range(maze.dimension):
+        for y in range(maze.dimension):
             if not maze.board[x][y].is_active:
                 return False
     return True
@@ -115,12 +106,12 @@ def is_not_active(maze, x, y):
 def show_board(maze):
     x, y = zip(*(maze.stack))
     plt.plot(x, y)
-    plt.ylim([-1, 11])
-    plt.xlim([-1, 11])
+    plt.ylim([-1, maze.dimension + 1])
+    plt.xlim([-1, maze.dimension + 1])
     plt.show()
 
 
 
 maze = Maze(DIMENSION)
-maze = move_forward(maze, 100)
+maze = move_forward(maze)
 show_board(maze)
