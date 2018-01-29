@@ -1,5 +1,7 @@
+from __future__ import division
 from random import shuffle
 import matplotlib.pyplot as plt
+import numpy as np
 
 DIMENSION = 20
 UP = (0, 1)
@@ -23,6 +25,7 @@ class Maze:
         self.stack = [(0, 0)]
         self.dimension = dimension
         self.board[0][0].is_active = True
+        self.walls = np.ones((dimension, dimension))
 
 
 def move_forward(maze):
@@ -43,6 +46,7 @@ def move_forward(maze):
             if is_inside_board(new_maze, new_x, new_y):
                 if is_not_active(new_maze, new_x, new_y):
                     new_maze.stack.append((new_x, new_y))
+                    new_maze.walls[new_x][new_y] = 0
                     new_maze.board[new_x][new_y].is_active = True
                     is_able_to_move_forward = True
                     break
@@ -50,8 +54,8 @@ def move_forward(maze):
             if all_board_cells_active(new_maze):
                 creation_ended = True
             else:
+
                 new_maze = move_backward(new_maze)
-    print new_maze.stack
     return new_maze
 
 
@@ -111,7 +115,47 @@ def show_board(maze):
     plt.show()
 
 
+def show_maze(maze):
+    directions = [UP, RIGHT]
+    coordinate_min = -0.5
+    coordinate_max = float(maze.dimension) - 0.5
+    maze_walls = []
+
+    for x in np.arange(coordinate_min, coordinate_max):
+        for y in np.arange(coordinate_min, coordinate_max):
+            for direction in directions:
+                start_point = (x, y)
+                end_point = (x + direction[0], y + direction[1])
+                if coordinate_min < end_point[0] < coordinate_max and coordinate_min < end_point[1] < coordinate_max:
+                    if is_not_in_path(start_point, maze, direction):
+                        maze_walls.append((start_point, end_point))
+                    else:
+                        print end_point
+    print 'end'
+
+
+def is_not_in_path(start_point, maze, direction):
+    if direction == UP:
+        path_point_1 = (start_point[0] - 0.5, start_point[1] + 0.5)
+        path_point_2 = (start_point[0] + 0.5, start_point[1] + 0.5)
+    elif direction == RIGHT:
+        path_point_1 = (start_point[0] + 0.5, start_point[1] + 0.5)
+        path_point_2 = (start_point[0] + 0.5, start_point[1] - 0.5)
+    else:
+        return False
+
+    for index, coordinates in enumerate(maze.stack):
+        if coordinates == path_point_1:
+            if index > 0:
+                if maze.stack[index - 1] == path_point_2:
+                    return False
+            if index < len(maze.stack) - 1:
+                if maze.stack[index + 1] == path_point_2:
+                    return False
+    return True
+
 
 maze = Maze(DIMENSION)
 maze = move_forward(maze)
 show_board(maze)
+show_maze(maze)
