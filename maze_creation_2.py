@@ -2,29 +2,7 @@ from __future__ import division
 from random import shuffle
 import matplotlib.pyplot as plt
 import numpy as np
-
-UP = (0, 1)
-RIGHT = (1, 0)
-DOWN = (0, -1)
-LEFT = (-1, 0)
-
-class Cell:
-
-    def __init__(self):
-        self.wall_top = True
-        self.wall_right = True
-        self.wall_bottom = True
-        self.wall_left = True
-        self.is_active = False
-
-class Maze:
-
-    def __init__(self, dimension):
-        self.board = [[Cell() for _ in range(dimension)] for _ in range(dimension)]
-        self.stack = [(0, 0)]
-        self.dimension = dimension
-        self.board[0][0].is_active = True
-        self.walls = np.ones((dimension, dimension))
+from maze import UP, RIGHT, DOWN, LEFT, Maze
 
 
 def move_forward(maze):
@@ -144,7 +122,6 @@ def show_all(maze):
     figure, ax = plt.subplots(nrows=1)
     add_maze(maze, ax)
     add_start_and_stop(maze, ax)
-    #add_paths(maze, ax)
     ax.set_ylim([-1.5, maze.dimension + 0.5])
     ax.set_xlim([-1.5, maze.dimension + 0.5])
     ax.set_aspect('equal')
@@ -181,5 +158,3 @@ def is_not_in_path(start_point, maze, direction):
                 if maze.stack[index + 1] == path_point_2:
                     return False
     return True
-
-
