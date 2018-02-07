@@ -3,7 +3,6 @@ from random import shuffle
 import matplotlib.pyplot as plt
 import numpy as np
 
-DIMENSION = 20
 UP = (0, 1)
 RIGHT = (1, 0)
 DOWN = (0, -1)
@@ -184,6 +183,3 @@ def is_not_in_path(start_point, maze, direction):
     return True
 
 
-maze = Maze(DIMENSION)
-maze = move_forward(maze)
-show_all(maze)
