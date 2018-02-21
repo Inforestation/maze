@@ -5,7 +5,7 @@ import numpy as np
 from maze import UP, RIGHT, DOWN, LEFT, Maze
 
 
-def move_forward(maze):
+def move_forward(maze):  # proceed forward choosing random directions until there is no path available
     new_maze = maze
     directions = [UP, RIGHT, DOWN, LEFT]
     creation_ended = False
@@ -36,7 +36,7 @@ def move_forward(maze):
     return new_maze
 
 
-def move_backward(maze):
+def move_backward(maze):  # when no path is available, move backward using stack until there is a possible path
     new_maze = maze
     is_able_to_move_forward = False
     stack_index = -2
@@ -51,7 +51,7 @@ def move_backward(maze):
     return new_maze
 
 
-def all_board_cells_active(maze):
+def all_board_cells_active(maze):  # checks if maze is finished
     for x in range(maze.dimension):
         for y in range(maze.dimension):
             if not maze.board[x][y].is_active:
@@ -90,7 +90,7 @@ def add_paths(maze, ax):
     return ax
 
 
-def add_maze(maze, ax):
+def add_maze(maze, ax):  # creates a visualization of a maze based on the set path
     directions = [UP, RIGHT]
     coordinate_min = -0.5
     coordinate_max = float(maze.dimension) + 0.5
@@ -131,7 +131,8 @@ def show_all(maze):
     ax.set_xticks([])
     plt.show()
 
-def add_start_and_stop(maze, ax):
+
+def add_start_and_stop(maze, ax):  # adds indication of starting and finishing points
     start_point = (0, 0)
     end_point = (maze.dimension - 1, maze.dimension - 1)
     ax.scatter(start_point[0], start_point[1], color='b', lw=2)
@@ -139,7 +140,7 @@ def add_start_and_stop(maze, ax):
     return ax
 
 
-def is_not_in_path(start_point, maze, direction):
+def is_not_in_path(start_point, maze, direction):  # checks whether two points are in path (stack)
     if direction == UP:
         path_point_1 = (start_point[0] - 0.5, start_point[1] + 0.5)
         path_point_2 = (start_point[0] + 0.5, start_point[1] + 0.5)

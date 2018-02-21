@@ -5,7 +5,7 @@ RIGHT = (1, 0)
 DOWN = (0, -1)
 LEFT = (-1, 0)
 
-class Cell:
+class Cell: # cell with 4 walls
 
     def __init__(self):
         self.wall_top = True
@@ -18,7 +18,7 @@ class Maze:
 
     def __init__(self, dimension):
         self.board = [[Cell() for _ in range(dimension)] for _ in range(dimension)]
-        self.stack = [(0, 0)]
+        self.stack = [(0, 0)] # a list of cells creating a maze form start to finish
         self.dimension = dimension
         self.board[0][0].is_active = True
         self.walls = np.ones((dimension, dimension))
