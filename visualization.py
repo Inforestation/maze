@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from maze import UP, RIGHT
+from maze import *
 from matplotlib import animation
 
 
@@ -22,7 +22,7 @@ def add_maze(maze, ax):  # creates a visualization of a maze based on the set pa
                 start_point = (x, y)
                 end_point = (x + direction[0], y + direction[1])
                 if coordinate_min < end_point[0] < coordinate_max and coordinate_min < end_point[1] < coordinate_max:
-                    if is_not_in_path(start_point, maze, direction):
+                    if maze.is_step_not_in_stack(start_point, direction):
                         maze_walls.append((start_point, end_point))
 
     maze_walls.append(((-0.5, maze.dimension - 0.5), (-0.5, -0.5)))
@@ -59,27 +59,6 @@ def add_start_and_stop(maze, ax):  # adds indication of starting and finishing p
     ax.scatter(start_point[0], start_point[1], color='b', lw=2)
     ax.scatter(end_point[0], end_point[0], color='r', lw=2)
     return ax
-
-
-def is_not_in_path(start_point, maze, direction):  # checks whether two points are in path (stack)
-    if direction == UP:
-        path_point_1 = (start_point[0] - 0.5, start_point[1] + 0.5)
-        path_point_2 = (start_point[0] + 0.5, start_point[1] + 0.5)
-    elif direction == RIGHT:
-        path_point_1 = (start_point[0] + 0.5, start_point[1] + 0.5)
-        path_point_2 = (start_point[0] + 0.5, start_point[1] - 0.5)
-    else:
-        return False
-
-    for index, coordinates in enumerate(maze.stack):
-        if coordinates == path_point_1:
-            if index > 0:
-                if maze.stack[index - 1] == path_point_2:
-                    return False
-            if index < len(maze.stack) - 1:
-                if maze.stack[index + 1] == path_point_2:
-                    return False
-    return True
 
 
 def animate_solution(maze, path):

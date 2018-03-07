@@ -54,12 +54,32 @@ class Maze:
         else:
             return False
 
+    def create_maze_stack_points(self, path_point, direction):
+        if direction == UP:
+            path_point_1 = (path_point[0] - 0.5, path_point[1] + 0.5)
+            path_point_2 = (path_point[0] + 0.5, path_point[1] + 0.5)
+            return path_point_1, path_point_2
+        elif direction == RIGHT:
+            path_point_1 = (path_point[0] + 0.5, path_point[1] + 0.5)
+            path_point_2 = (path_point[0] + 0.5, path_point[1] - 0.5)
+            return path_point_1, path_point_2
+        else:
+            return None
+
     def is_in_stack(self, last_x, last_y, new_x, new_y):
         for index, value in enumerate(self.stack):
             if value == (last_x, last_y):
-                if self.stack[index + 1] == (new_x, new_y) or self.stack[index - 1] == (new_x, new_y):
-                    return True
+                if index > 0:
+                    if self.stack[index - 1] == (new_x, new_y):
+                        return True
+                if index < len(self.stack) - 1:
+                    if self.stack[index + 1] == (new_x, new_y):
+                        return True
         return False
+
+    def is_step_not_in_stack(self, path_point, direction):  # checks whether two points are in stack
+        path_point_1, path_point_2 = self.create_maze_stack_points(path_point, direction)
+        return not self.is_in_stack(path_point_1[0], path_point_1[1], path_point_2[0], path_point_2[1])
 
 
 class Path:
