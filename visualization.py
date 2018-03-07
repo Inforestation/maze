@@ -38,6 +38,14 @@ def add_maze(maze, ax):  # creates a visualization of a maze based on the set pa
     return ax
 
 
+def add_start_and_stop(maze, ax):  # adds indication of starting and finishing points
+    start_point = (0, 0)
+    end_point = (maze.dimension - 1, maze.dimension - 1)
+    ax.scatter(start_point[0], start_point[1], color='b', lw=2)
+    ax.scatter(end_point[0], end_point[0], color='r', lw=2)
+    return ax
+
+
 def show_all(maze, path):
     figure, ax = plt.subplots(nrows=1)
     add_paths(maze, ax, path)
@@ -51,14 +59,6 @@ def show_all(maze, path):
     ax.set_yticks([])
     ax.set_xticks([])
     plt.show()
-
-
-def add_start_and_stop(maze, ax):  # adds indication of starting and finishing points
-    start_point = (0, 0)
-    end_point = (maze.dimension - 1, maze.dimension - 1)
-    ax.scatter(start_point[0], start_point[1], color='b', lw=2)
-    ax.scatter(end_point[0], end_point[0], color='r', lw=2)
-    return ax
 
 
 def animate_solution(maze, path):

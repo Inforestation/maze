@@ -34,7 +34,7 @@ class Maze:
     def all_board_cells_active(self):  # checks if maze is finished
         for x in range(self.dimension):
             for y in range(self.dimension):
-                if not self.board[x][y].is_active:
+                if self.is_not_active(x, y):
                     return False
         return True
 
@@ -44,7 +44,7 @@ class Maze:
             new_x = x + direction[0]
             new_y = y + direction[1]
             if self.is_inside_board(new_x, new_y):
-                if not self.board[new_x][new_y].is_active:
+                if self.is_not_active(new_x, new_y):
                     return True
         return False
 
@@ -54,7 +54,8 @@ class Maze:
         else:
             return False
 
-    def create_maze_stack_points(self, path_point, direction):
+    @staticmethod
+    def create_maze_stack_points(path_point, direction):
         if direction == UP:
             path_point_1 = (path_point[0] - 0.5, path_point[1] + 0.5)
             path_point_2 = (path_point[0] + 0.5, path_point[1] + 0.5)
