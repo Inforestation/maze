@@ -1,18 +1,11 @@
 import maze as mz
 from random import shuffle
-import matplotlib.pyplot as plt
-import numpy as np
 
-class Path:
-    def __init__(self):
-        self.short_path = [(0, 0)]
-        self.smooth_path = [(0, 0)]
 
 def solve(maze):
     directions = [mz.UP, mz.RIGHT, mz.DOWN, mz.LEFT]
     creation_ended = False
-    path = Path()
-
+    path = mz.Path()
 
     while not creation_ended:
         shuffle(directions)
@@ -25,15 +18,14 @@ def solve(maze):
             new_x = last_x + direction[0]
             new_y = last_y + direction[1]
 
-            if is_inside_board(maze, new_x, new_y):
-                if is_not_in_path(path, new_x, new_y):
-                    if is_in_stack(last_x, last_y, new_x, new_y, maze):
+            if maze.is_inside_board(new_x, new_y):
+                if path.is_not_in_path(new_x, new_y):
+                    if maze.is_in_stack(last_x, last_y, new_x, new_y):
                         path.short_path.append((new_x, new_y))
                         is_able_to_move_forward = True
                         break
 
         if not is_able_to_move_forward:
-            #creation_ended = True
             path = return_to_last_crossing(maze, path)
 
         if path.short_path[-1][0] == maze.dimension - 1 and path.short_path[-1][1] == maze.dimension - 1:
@@ -51,29 +43,8 @@ def return_to_last_crossing(maze, path):
             new_x = last_x + direction[0]
             new_y = last_y + direction[1]
 
-            if is_inside_board(maze, new_x, new_y):
-                if is_not_in_path(path, new_x, new_y):
-                    if is_in_stack(last_x, last_y, new_x, new_y, maze):
+            if maze.is_inside_board(new_x, new_y):
+                if path.is_not_in_path(new_x, new_y):
+                    if maze.is_in_stack(last_x, last_y, new_x, new_y):
                         path.short_path.append((new_x, new_y))
                         return path
-
-
-def is_inside_board(maze, x, y):
-    if maze.dimension > x >= 0 and maze.dimension > y >= 0:
-        return True
-    else:
-        return False
-
-
-def is_not_in_path(path, new_x, new_y):
-    if (new_x, new_y) in path.short_path:
-        return False
-    return True
-
-
-def is_in_stack(last_x, last_y, new_x, new_y, maze):
-    for index, value in enumerate(maze.stack):
-        if value == (last_x, last_y):
-            if maze.stack[index + 1] == (new_x, new_y) or maze.stack[index - 1] == (new_x, new_y):
-                return True
-    return False

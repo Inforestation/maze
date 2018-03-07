@@ -1,4 +1,4 @@
-import maze_creation_2 as mc
+import maze_creation as mc
 import maze_solving as ms
 import visualization as v
 import maze

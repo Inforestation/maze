@@ -102,7 +102,6 @@ def animate_solution(maze, path):
     def animate(i):
         x, y = zip(*(path))
         line.set_data(x[:i+2], y[:i+2])
-        print i, x[i], y[i]
         return line,
 
     anim = animation.FuncAnimation(fig, animate, init_func=init,
