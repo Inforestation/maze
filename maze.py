@@ -20,7 +20,7 @@ class Maze:
 
     def __init__(self, dimension):
         self.board = [[Cell() for _ in range(dimension)] for _ in range(dimension)]
-        self.stack = [(0, 0)] # a list of cells creating a maze form start to finish
+        self.stack = [(0, 0)]  # a list of cells creating a maze form start to finish
         self.dimension = dimension
         self.board[0][0].is_active = True
         self.walls = np.ones((dimension, dimension))
@@ -86,6 +86,8 @@ class Maze:
 class Path:
     def __init__(self):
         self.short_path = [(0, 0)]
+        self.real_path = [(0, 0)]
+        self.solution_path = [(0, 0)]
 
     def is_not_in_path(self, new_x, new_y):
         if (new_x, new_y) in self.short_path:

@@ -2,6 +2,7 @@ from __future__ import division
 from random import shuffle
 from maze import *
 
+
 def move_forward(maze):  # proceed forward choosing random directions until there is no path available
     new_maze = maze
     directions = [UP, RIGHT, DOWN, LEFT]

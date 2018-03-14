@@ -1,10 +1,9 @@
 import matplotlib.pyplot as plt
-import numpy as np
 from maze import *
 from matplotlib import animation
 
 
-def add_paths(maze, ax, path):
+def add_paths(ax, path):
     x, y = zip(*(path))
     ax.plot(x, y, color='green', lw=1.5)
     return ax
@@ -42,8 +41,16 @@ def add_start_and_stop(maze, ax):  # adds indication of starting and finishing p
     start_point = (0, 0)
     end_point = (maze.dimension - 1, maze.dimension - 1)
     ax.scatter(start_point[0], start_point[1], color='b', lw=2)
-    ax.scatter(end_point[0], end_point[0], color='r', lw=2)
+    ax.scatter(end_point[0], end_point[0], color='b', lw=2)
     return ax
+
+
+def set_ax(ax):
+    ax.set_aspect('equal')
+    ax.set_yticklabels([])
+    ax.set_xticklabels([])
+    ax.set_yticks([])
+    ax.set_xticks([])
 
 
 def show_all(maze, path):
@@ -53,11 +60,7 @@ def show_all(maze, path):
     add_start_and_stop(maze, ax)
     ax.set_ylim([-1.5, maze.dimension + 0.5])
     ax.set_xlim([-1.5, maze.dimension + 0.5])
-    ax.set_aspect('equal')
-    ax.set_yticklabels([])
-    ax.set_xticklabels([])
-    ax.set_yticks([])
-    ax.set_xticks([])
+    set_ax(ax)
     plt.show()
 
 
@@ -65,26 +68,24 @@ def animate_solution(maze, path):
     fig = plt.figure()
     ax = plt.axes(xlim=(-1.5, maze.dimension + 0.5), ylim=(-1.5, maze.dimension + 0.5))
     add_maze(maze, ax)
-
-    ax.set_aspect('equal')
-    ax.set_yticklabels([])
-    ax.set_xticklabels([])
-    ax.set_yticks([])
-    ax.set_xticks([])
+    set_ax(ax)
     add_start_and_stop(maze, ax)
-    line, = ax.plot([], [], lw=2, color='green')
+    line, = ax.plot([], [], lw=2, color='green', zorder=1)
+    dot = ax.scatter([], [], lw=0, s=40, c='red', zorder=2)
 
     def init():
+        dot.set_offsets(([], []))
         line.set_data([], [])
         return line,
 
     def animate(i):
         x, y = zip(*(path))
+        dot.set_offsets(([x[i + 1]], [y[i + 1]]))
         line.set_data(x[:i+2], y[:i+2])
         return line,
 
     anim = animation.FuncAnimation(fig, animate, init_func=init,
-                                   frames=len(path)-1, interval=200, blit=False, repeat=False)
+                                   frames=len(path)-1, interval=400, blit=False, repeat=False)
     plt.show()
 
 
