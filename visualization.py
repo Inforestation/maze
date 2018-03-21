@@ -40,8 +40,8 @@ def add_maze(maze, ax):  # creates a visualization of a maze based on the set pa
 def add_start_and_stop(maze, ax):  # adds indication of starting and finishing points
     start_point = (0, 0)
     end_point = (maze.dimension - 1, maze.dimension - 1)
-    ax.scatter(start_point[0], start_point[1], color='b', lw=2)
-    ax.scatter(end_point[0], end_point[0], color='b', lw=2)
+    ax.scatter(start_point[0], start_point[1], color='b', lw=2, zorder=3)
+    ax.scatter(end_point[0], end_point[0], color='b', lw=2, zorder=4)
     return ax
 
 
@@ -85,7 +85,7 @@ def animate_solution(maze, path):
         return line,
 
     anim = animation.FuncAnimation(fig, animate, init_func=init,
-                                   frames=len(path)-1, interval=400, blit=False, repeat=False)
+                                   frames=len(path)-1, interval=100, blit=False, repeat=False)
     plt.show()
 
 

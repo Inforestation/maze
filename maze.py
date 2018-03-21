@@ -90,6 +90,6 @@ class Path:
         self.solution_path = [(0, 0)]
 
     def is_not_in_path(self, new_x, new_y):
-        if (new_x, new_y) in self.short_path:
+        if (new_x, new_y) in self.real_path:
             return False
         return True

@@ -1,5 +1,6 @@
 import maze as mz
 from random import shuffle
+import numpy as np
 
 
 def solve(maze):
@@ -37,8 +38,9 @@ def solve(maze):
 def return_to_last_crossing(maze, path):
     directions = [mz.UP, mz.RIGHT, mz.DOWN, mz.LEFT]
     shuffle(directions)
-    for a in range(len(path.short_path)):
-        last_x, last_y = path.short_path[-2 - a]
+    real_path_origin = path.real_path[:]
+    for a in range(len(path.real_path)):
+        last_x, last_y = real_path_origin[-2 - a]
         path.real_path.append((last_x, last_y))
         for direction in directions:
 
