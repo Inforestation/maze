@@ -40,8 +40,8 @@ def add_maze(maze, ax):  # creates a visualization of a maze based on the set pa
 def add_start_and_stop(maze, ax):  # adds indication of starting and finishing points
     start_point = (0, 0)
     end_point = (maze.dimension - 1, maze.dimension - 1)
-    ax.scatter(start_point[0], start_point[1], color='b', lw=2, zorder=3)
-    ax.scatter(end_point[0], end_point[0], color='b', lw=2, zorder=4)
+    ax.scatter(start_point[0], start_point[1], color='b', lw=2, zorder=50)
+    ax.scatter(end_point[0], end_point[0], color='b', lw=2, zorder=51)
     return ax
 
 
@@ -70,22 +70,27 @@ def animate_solution(maze, path):
     add_maze(maze, ax)
     set_ax(ax)
     add_start_and_stop(maze, ax)
-    line, = ax.plot([], [], lw=2, color='green', zorder=1)
-    dot = ax.scatter([], [], lw=0, s=40, c='red', zorder=2)
+    line, = ax.plot([], [], lw=2, color='green', zorder=2)
+    line2, = ax.plot([], [], lw=4, color='red', zorder=1)
+    dot = ax.scatter([], [], lw=0, s=40, c='black', zorder=3)
 
     def init():
         dot.set_offsets(([], []))
         line.set_data([], [])
+        line2.set_data([], [])
         return line,
 
     def animate(i):
-        x, y = zip(*(path))
+        x, y = zip(*(path.real_path))
+        x2, y2 = zip(*(path.short_path))
         dot.set_offsets(([x[i + 1]], [y[i + 1]]))
         line.set_data(x[:i+2], y[:i+2])
-        return line,
+        if i == len(path.real_path)-2:
+            line2.set_data(x2, y2)
+        return line, line2
 
     anim = animation.FuncAnimation(fig, animate, init_func=init,
-                                   frames=len(path)-1, interval=100, blit=False, repeat=False)
+                                   frames=len(path.real_path)-1, interval=100, blit=False, repeat=False)
     plt.show()
 
 
