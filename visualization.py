@@ -70,8 +70,8 @@ def animate_solution(maze, path):
     add_maze(maze, ax)
     set_ax(ax)
     add_start_and_stop(maze, ax)
-    line, = ax.plot([], [], lw=2, color='green', zorder=2)
-    line2, = ax.plot([], [], lw=4, color='red', zorder=1)
+    line, = ax.plot([], [], lw=2, color='green', zorder=1)
+    line2, = ax.plot([], [], lw=4, color='red', zorder=2)
     dot = ax.scatter([], [], lw=0, s=40, c='black', zorder=3)
 
     def init():
@@ -82,7 +82,7 @@ def animate_solution(maze, path):
 
     def animate(i):
         x, y = zip(*(path.real_path))
-        x2, y2 = zip(*(path.short_path))
+        x2, y2 = zip(*(path.solution_path))
         dot.set_offsets(([x[i + 1]], [y[i + 1]]))
         line.set_data(x[:i+2], y[:i+2])
         if i == len(path.real_path)-2:
