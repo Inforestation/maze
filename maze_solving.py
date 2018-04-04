@@ -85,10 +85,7 @@ def create_solution_path(path):
     ranges_to_remove = [x for x in ranges_to_remove if x not in indexes_to_remove]
     path.solution_path = path.real_path
 
-    def first_element(indexes):
-        return indexes[0]
-
-    ranges_to_remove.sort(reverse=True, key=first_element)
+    ranges_to_remove.sort(reverse=True, key=lambda indexes: indexes[0])
 
     for range_to_remove in ranges_to_remove:
         path.solution_path = path.solution_path[:range_to_remove[0]] + path.solution_path[range_to_remove[1]:]
